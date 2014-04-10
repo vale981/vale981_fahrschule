@@ -1,0 +1,128 @@
+Help on module string:
+
+NNAAMMEE
+    string - A collection of string constants.
+
+MMOODDUULLEE  RREEFFEERREENNCCEE
+    http://docs.python.org/3.3/library/string
+    
+    The following documentation is automatically generated from the Python
+    source files.  It may be incomplete, incorrect or include features that
+    are considered implementation detail and may vary between Python
+    implementations.  When in doubt, consult the module reference at the
+    location listed above.
+
+DDEESSCCRRIIPPTTIIOONN
+    Public module variables:
+    
+    whitespace -- a string containing all ASCII whitespace
+    ascii_lowercase -- a string containing all ASCII lowercase letters
+    ascii_uppercase -- a string containing all ASCII uppercase letters
+    ascii_letters -- a string containing all ASCII letters
+    digits -- a string containing all ASCII decimal digits
+    hexdigits -- a string containing all ASCII hexadecimal digits
+    octdigits -- a string containing all ASCII octal digits
+    punctuation -- a string containing all ASCII punctuation characters
+    printable -- a string containing all ASCII characters considered printable
+
+CCLLAASSSSEESS
+    builtins.object
+        Formatter
+        Template
+    
+    class FFoorrmmaatttteerr(builtins.object)
+     |  Methods defined here:
+     |  
+     |  cchheecckk__uunnuusseedd__aarrggss(self, used_args, args, kwargs)
+     |  
+     |  ccoonnvveerrtt__ffiieelldd(self, value, conversion)
+     |  
+     |  ffoorrmmaatt(self, format_string, *args, **kwargs)
+     |  
+     |  ffoorrmmaatt__ffiieelldd(self, value, format_spec)
+     |  
+     |  ggeett__ffiieelldd(self, field_name, args, kwargs)
+     |      # given a field_name, find the object it references.
+     |      #  field_name:   the field being looked up, e.g. "0.name"
+     |      #                 or "lookup[3]"
+     |      #  used_args:    a set of which args have been used
+     |      #  args, kwargs: as passed in to vformat
+     |  
+     |  ggeett__vvaalluuee(self, key, args, kwargs)
+     |  
+     |  ppaarrssee(self, format_string)
+     |      # returns an iterable that contains tuples of the form:
+     |      # (literal_text, field_name, format_spec, conversion)
+     |      # literal_text can be zero length
+     |      # field_name can be None, in which case there's no
+     |      #  object to format and output
+     |      # if field_name is not None, it is looked up, formatted
+     |      #  with format_spec and conversion and then used
+     |  
+     |  vvffoorrmmaatt(self, format_string, args, kwargs)
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data descriptors defined here:
+     |  
+     |  ____ddiicctt____
+     |      dictionary for instance variables (if defined)
+     |  
+     |  ____wweeaakkrreeff____
+     |      list of weak references to the object (if defined)
+    
+    class TTeemmppllaattee(builtins.object)
+     |  A string class for supporting $-substitutions.
+     |  
+     |  Methods defined here:
+     |  
+     |  ____iinniitt____(self, template)
+     |  
+     |  ssaaffee__ssuubbssttiittuuttee(self, *args, **kws)
+     |  
+     |  ssuubbssttiittuuttee(self, *args, **kws)
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data descriptors defined here:
+     |  
+     |  ____ddiicctt____
+     |      dictionary for instance variables (if defined)
+     |  
+     |  ____wweeaakkrreeff____
+     |      list of weak references to the object (if defined)
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data and other attributes defined here:
+     |  
+     |  ddeelliimmiitteerr = '$'
+     |  
+     |  ffllaaggss = 2
+     |  
+     |  iiddppaatttteerrnn = '[_a-z][_a-z0-9]*'
+     |  
+     |  ppaatttteerrnn = <_sre.SRE_Pattern object>
+
+FFUUNNCCTTIIOONNSS
+    ccaappwwoorrddss(s, sep=None)
+        capwords(s [,sep]) -> string
+        
+        Split the argument into words using split, capitalize each
+        word using capitalize, and join the capitalized words using
+        join.  If the optional second argument sep is absent or None,
+        runs of whitespace characters are replaced by a single space
+        and leading and trailing whitespace are removed, otherwise
+        sep is used to split and join the words.
+
+DDAATTAA
+    aasscciiii__lleetttteerrss = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    aasscciiii__lloowweerrccaassee = 'abcdefghijklmnopqrstuvwxyz'
+    aasscciiii__uuppppeerrccaassee = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    ddiiggiittss = '0123456789'
+    hheexxddiiggiittss = '0123456789abcdefABCDEF'
+    ooccttddiiggiittss = '01234567'
+    pprriinnttaabbllee = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTU...
+    ppuunnccttuuaattiioonn = '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
+    wwhhiitteessppaaccee = ' \t\n\r\x0b\x0c'
+
+FFIILLEE
+    /usr/lib/python3.3/string.py
+

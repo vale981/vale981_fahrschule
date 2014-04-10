@@ -1,0 +1,30 @@
+{% extends 'quizzes.html' %}
+<html lang="en">
+<head>
+    <title>Fahrschule Examiner 0.1</title>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/quizz.css' %}" />
+</head>
+{% block header %}
+ {% if len >= 20 %}
+     <div style="font-size: 20px">{{ quiz.title }}</div>
+ {% else %}
+    {{quiz.title}}
+ {% endif %}
+
+{% endblock %}
+
+    {% block main %}
+    {% if Frage.count == 0 %}
+        <br>
+            <h1 id="main_link" align="center">Keine Fragen vorhanden!</h1>
+        {% endif %}
+        <br>
+    {% for Frage in Frage %}
+        {{Frage.content}}<br>
+    {% endfor %}
+    
+{% endblock %}
+
+
+</html>

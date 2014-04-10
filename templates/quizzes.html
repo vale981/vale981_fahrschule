@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Fahrschule Examiner 0.1</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/quizz.css' %}"/>
+</head>
+
+<body>
+
+<div id="container">
+
+    <div class="mainHead">
+        {% block header %}
+            Quiz Übersicht
+        {% endblock %}
+    </div>
+    {% block menu %}
+    <div id="menu" style="background-color:#0099FF;height:{{ hg_m }}px;width:16%;">
+        <ul>
+            <div id="men">
+                <a href="/quiz/all">Übersicht</a>
+            </div>
+            <div id="men">
+                <a href="/admin">Admin</a>
+            </div>
+            <div id="men">
+
+                Login
+            </div>
+        </ul>
+
+    </div>
+    {% endblock %}
+
+    <div id="main" style="height:{{ hg }}px;float:left;">
+        {% block main %}
+            <br>
+            <div id="main_content">
+                {% if quizes.count == 0 %}
+                    <h1 id="main_link" align="center">Keine Fragebogen vorhanden!</h1>
+                {% endif %}
+
+                <ol>
+
+                        {% for quiz in quizes %}
+                            <li>
+                             <a id="main_link" href="/quiz/get/{{ quiz.id }}">{{ quiz.title }}</a>
+                                   <br>
+                             {{ quiz.description }}<br>
+                             </li>
+                        {% endfor %}
+                </ol>
+            </div>
+        {% endblock %}
+    </div>
+</div>
+    <div id="footer" style="background-color:#0099FF;clear:both;text-align:center;">
+        Copyright © Valentin Boettcher
+    </div>
+</body>
+</html>
