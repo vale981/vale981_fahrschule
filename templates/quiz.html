@@ -17,14 +17,38 @@
     {% block main %}
     {% if Frage.count == 0 %}
         <br>
-            <h1 id="main_link" align="center">Keine Fragen vorhanden!</h1>
+            <h1 id="main_link" style="text-align: center" align="center">Keine Fragen vorhanden!</h1>
         {% endif %}
-        <br>
+    <ol>
     {% for Frage in Frage %}
-        {{Frage.content}}<br>
+        <li><div id="frage">{{Frage.content}}</div></li>
+    {% comment %}<form method="post" action="">
+    {{ formset }}
+    </form>{% endcomment %}
+    {% for aw in aw %}
+    {% if aw.frage.get == Frage %}
+            <form action="/quiz/check/" method="post">{% csrf_token %}
+            <label for="aw_check">{{ aw.content }}</label>
+            <input type="checkbox" name="aw_check" id="aw_check">
+            <input type="hidden" name="user_log" value="{{ user.get }}">
+            <input type="hidden" name="frage" value="{{ Frage }}">
+            <input type="hidden" name="antwort" value="{{ aw }}">
+            <input type="hidden" name="quiz" value="{{ quiz }}">
+
+            {% if aw.richtig %}
+            <input type="hidden" name="richtig" value=True>
+            {% else %}
+            <input type="hidden" name="richtig" value=False>
+            {% endif %}
+            <br><input type="submit" value="Abgeben" />
+    {% endif %}
     {% endfor %}
+    {% endfor %}
+
+    </form></ol>
     
 {% endblock %}
 
 
 </html>
+
