@@ -1,3 +1,4 @@
+
 {% extends 'quizzes.html' %}
 <html lang="en">
 <head>
@@ -5,6 +6,7 @@
     {% load staticfiles %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/quizz.css' %}" />
 </head>
+
 {% block header %}
  {% if len >= 20 %}
      <div style="font-size: 20px">{{ quiz.title }}</div>
@@ -22,30 +24,45 @@
     <ol>
     {% for Frage in Frage %}
         <li><div id="frage">{{Frage.content}}</div></li>
-    {% comment %}<form method="post" action="">
-    {{ formset }}
-    </form>{% endcomment %}
-    {% for aw in aw %}
-    {% if aw.frage.get == Frage %}
-            <form action="/quiz/check/" method="post">{% csrf_token %}
+        {% for aw in Frage.antworten.all %}
+            <form action="/quiz/check/" name="{{ aw.content }}" method="post">{% csrf_token %}
             <label for="aw_check">{{ aw.content }}</label>
             <input type="checkbox" name="aw_check" id="aw_check">
-            <input type="hidden" name="user_log" value="{{ user.get }}">
-            <input type="hidden" name="frage" value="{{ Frage }}">
-            <input type="hidden" name="antwort" value="{{ aw }}">
-            <input type="hidden" name="quiz" value="{{ quiz }}">
+            <input type="hidden" name="user_log" value="{{ user.id }}">
+            <input type="hidden" name="frage" value="{{ Frage.id }}">
+            <input type="hidden" name="antwort" value="{{ aw.id }}">
+            <input type="hidden" name="quiz" value="{{ quiz.id }}">
 
             {% if aw.richtig %}
             <input type="hidden" name="richtig" value=True>
             {% else %}
             <input type="hidden" name="richtig" value=False>
             {% endif %}
-            <br><input type="submit" value="Abgeben" />
-    {% endif %}
+            <input type="submit" value="Abgeben" />
+            <br>
+
+    </form>
+
     {% endfor %}
     {% endfor %}
 
-    </form></ol>
+
+    </ol>
+
+
+    <script language="javascript">
+    function call_submitforms(){
+    {% for Frage in Frage %}
+    {% for aw in Frage.antworten.all %}
+    setTimeout("document.{{ aw.content }}.submit()",1000);
+        {{ check.it }}
+    {% endfor %}
+    {% endfor %}
+    }
+    </script>
+
+    <input type="button" value="Abschicken" onclick="call_submitforms()" />
+
     
 {% endblock %}
 

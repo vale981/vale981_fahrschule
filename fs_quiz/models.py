@@ -19,29 +19,15 @@ class Quiz(models.Model) :
     def __str__(self):              # __unicode__ on Python 2
         return self.title
 
-class Frage(models.Model):
-
-    quiz = models.ManyToManyField(Quiz, blank=True, )
-
-    content = models.CharField(max_length=1000,
-                               blank=False,
-                               verbose_name='Frage Text',
-                               )
 
 
 
 
 
-    class Admin:
-        pass
 
-    def __unicode__(self):
-        return self.content
-    def __str__(self):              # __unicode__ on Python 2
-        return self.content
 
 class Antwort(models.Model):
-    frage = models.ManyToManyField(Frage, blank=False, )
+
 
     content = models.CharField(max_length=1000,
                                blank=False,
@@ -56,20 +42,35 @@ class Antwort(models.Model):
     def __str__(self):              # __unicode__ on Python 2
         return self.content
 
-    def get_related_to(self, status):
-        return self.related_to.filter(
-        from_people__status=status,
-        from_people__to_person=self)
+
 
     class Admin:
         pass
 
 
+class Frage(models.Model):
 
+    quiz = models.ManyToManyField(Quiz, blank=True, )
 
-class Results:
-    quiz=models.ManyToManyField(Quiz, blank=True, )
-    frage=models.ManyToManyField(User, blank=True, )
-    user=models.ManyToManyField(User, blank=True, )
+    content = models.CharField(max_length=1000,
+                               blank=False,
+                               verbose_name='Frage Text',
+                               )
+    antworten = models.ManyToManyField(Antwort, blank=False, verbose_name='Antworten' )
+
+    class Admin:
+        pass
+
+    def __unicode__(self):
+        return self.content
+    def __str__(self):              # __unicode__ on Python 2
+        return self.content
+
+class Results(models.Model):
+    quiz=models.ForeignKey(Quiz, blank=True, )
+    frage=models.ForeignKey(Frage, blank=True, )
+    user=models.ForeignKey(User, blank=True, )
     richtig = models.BooleanField(blank=True)
-    choice = models.ManyToManyField(Antwort)
+    aw = models.ForeignKey(Antwort)
+    choice = models.BooleanField(blank=True)
+

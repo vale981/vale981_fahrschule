@@ -27,15 +27,6 @@ def quiz(request, quiz_id=1):
     cs = {}
     cs.update(csrf(request))
 
-    # AuthorFormSet = modelformset_factory(Results, form=ResultForm)
-    # if request.method == 'POST':
-    #     formset = AuthorFormSet(request.POST, request.FILES)
-    #     if formset.is_valid():
-    #         formset.save()
-    #         # do something.
-    # else:
-    #     formset = AuthorFormSet(queryset=Frage.objects.filter(quiz=quiz_id))
-
     height=75*Frage.objects.count()
     height_menu = height + 10
     if Frage.objects.count() == 0:
@@ -43,24 +34,34 @@ def quiz(request, quiz_id=1):
         height_menu = height
 
     len_quiz = len(Quiz.objects.get(id=quiz_id).title)
+    count=Frage.objects.filter(quiz=quiz_id).count
+    count_aw = 0
+    aw = Frage.objects.filter(quiz=quiz_id)
+
     cs.update({'quiz': Quiz.objects.get(id=quiz_id),
                              'Frage': Frage.objects.filter(quiz=quiz_id),
                              'len': len_quiz,
                              'hg': height,
                              'hg_m': height_menu,
                              'user': request.user,
-                             'aw': Antwort.objects.all()})
+                             'aw': Antwort.objects.all(),
+                             'count': count,
+                             'count_aw': count_aw})
     return render_to_response('quiz.html', cs)
 
 def check_view(request):
-    check = request.POST.get('aw_check', '')
-    user = request.POST.get('user_log', '')
-    frage = request.POST.get('frage', '')
-    antwort = request.POST.get('antwort', '')
-    richtig = request.POST.get('richtig', '')
-    quiz_get = request.POST.get('quiz', '')
-    res = Results(quiz=quiz_get, frage=frage, user=user, richtig=richtig, choice=check)
-    res.save()
-    return  HttpResponseRedirect('/quiz/all/')
+        check = request.POST.get('aw_check', '')
+        user_id = request.POST.get('user_log', '')
+        user_act = User.objects.get(id=user_id)
+        frage_id = request.POST.get('frage', '')
+        frage = Frage.objects.get(id=frage_id)
+        antwort_id = request.POST.get('antwort', '')
+        antwort = Antwort.objects.get(id=antwort_id)
+        richtig = request.POST.get('richtig', '')
+        quiz_id = request.POST.get('quiz', '')
+        quiz = Quiz.objects.get(id=quiz_id)
+        res = Results(quiz=quiz, frage=frage, user=user_act, richtig=richtig, choice=check, aw=antwort)
+        res.save()
+        return  HttpResponseRedirect('/quiz/all/')
 
 
