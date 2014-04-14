@@ -17,51 +17,37 @@
 {% endblock %}
 
     {% block main %}
-    {% if Frage.count == 0 %}
+    {% if quiz.fragen.count == 0 %}
         <br>
             <h1 id="main_link" style="text-align: center" align="center">Keine Fragen vorhanden!</h1>
         {% endif %}
     <ol>
-    {% for Frage in Frage %}
-        <li><div id="frage">{{Frage.content}}</div></li>
-        {% for aw in Frage.antworten.all %}
-            <form action="/quiz/check/" name="{{ aw.content }}" method="post">{% csrf_token %}
-            <label for="aw_check">{{ aw.content }}</label>
-            <input type="checkbox" name="aw_check" id="aw_check">
-            <input type="hidden" name="user_log" value="{{ user.id }}">
-            <input type="hidden" name="frage" value="{{ Frage.id }}">
-            <input type="hidden" name="antwort" value="{{ aw.id }}">
-            <input type="hidden" name="quiz" value="{{ quiz.id }}">
+    <form action="/quiz/check/" name="quiz_form" method="post">{% csrf_token %}
+    <input type="hidden" name="user_log" value="{{ user.id }}">
+    <input type="hidden" name="quiz" value="{{ quiz.id }}">
 
-            {% if aw.richtig %}
-            <input type="hidden" name="richtig" value=True>
-            {% else %}
-            <input type="hidden" name="richtig" value=False>
-            {% endif %}
-            <input type="submit" value="Abgeben" />
+        {% for Frage in quiz.fragen.all %}
+        <li><div id="frage">{{Frage.content}}</div></li>
+        <input type="hidden" name="frage{{ Frage.id }}" value="{{ Frage.id }}">
+
+        {% for aw in Frage.antworten.all %}
+            <input type="checkbox" name="aw_check{{ aw.id }}" id="aw_check">
+            <label for="aw_check{{ aw.id }}">{{ aw.content }}</label>
+            <input type="hidden" name="antwort{{ Frage.id }}" value="{{ aw.id }}">
+
+
             <br>
 
+
+    {% endfor %}
+    {% endfor %}
+    <input type="submit" value="Abgeben"/>
     </form>
-
-    {% endfor %}
-    {% endfor %}
-
 
     </ol>
 
 
-    <script language="javascript">
-    function call_submitforms(){
-    {% for Frage in Frage %}
-    {% for aw in Frage.antworten.all %}
-    setTimeout("document.{{ aw.content }}.submit()",1000);
-        {{ check.it }}
-    {% endfor %}
-    {% endfor %}
-    }
-    </script>
 
-    <input type="button" value="Abschicken" onclick="call_submitforms()" />
 
     
 {% endblock %}

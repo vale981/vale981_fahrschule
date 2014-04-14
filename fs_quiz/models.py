@@ -1,23 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-class Quiz(models.Model) :
-    title = models.CharField(max_length=60,
-                             blank=False,
-                             verbose_name="Titel"
-                             )
-
-    description = models.TextField(blank=True,
-                                   help_text="Die Beschreibung des Quiz",
-                                   verbose_name="Beschreibung"
-                                   )
-    class Admin:
-        pass
-
-    def __unicode__(self):
-        return self.title
-    def __str__(self):              # __unicode__ on Python 2
-        return self.title
 
 
 
@@ -50,7 +33,6 @@ class Antwort(models.Model):
 
 class Frage(models.Model):
 
-    quiz = models.ManyToManyField(Quiz, blank=True, )
 
     content = models.CharField(max_length=1000,
                                blank=False,
@@ -65,6 +47,27 @@ class Frage(models.Model):
         return self.content
     def __str__(self):              # __unicode__ on Python 2
         return self.content
+
+class Quiz(models.Model) :
+    fragen = models.ManyToManyField(Frage, blank=True, verbose_name="Fragen")
+
+    title = models.CharField(max_length=60,
+                             blank=False,
+                             verbose_name="Titel"
+                             )
+
+    description = models.TextField(blank=True,
+                                   help_text="Die Beschreibung des Quiz",
+                                   verbose_name="Beschreibung"
+                                   )
+    class Admin:
+        pass
+
+    def __unicode__(self):
+        return self.title
+    def __str__(self):              # __unicode__ on Python 2
+        return self.title
+
 
 class Results(models.Model):
     quiz=models.ForeignKey(Quiz, blank=True, )
