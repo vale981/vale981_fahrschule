@@ -8,7 +8,7 @@ def get_def():
 
 class UserQuizRel(models.Model):
     quiz=models.ManyToManyField(Quiz, blank=True, related_name='User', verbose_name='abgeschlossene Quizs')
-    allowed_quiz=models.ManyToManyField(Quiz, blank=True, related_name='User-get', verbose_name='Erlaubte Quizs', default=get_def())
+    allowed_quiz=models.ManyToManyField(Quiz, blank=True, related_name='User-get', verbose_name='Erlaubte Quizs', default=Quiz.objects.all())
     user=models.OneToOneField(User)
 
 class ResultGroup(models.Model):

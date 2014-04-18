@@ -3,12 +3,14 @@
     {% if form.errors %}
         <p class="error">Benutzernahme oder Passwort falsch!</p>
     {% endif %}
+    <table class="bordered">
     <form action="/auth/" method="post">{% csrf_token %}
-        <label for="username">Benutzer:</label>
-        <input type="text" name="username" value="" id="username">
-        <label for="password">Passwort:</label>
-        <input type="password" name="password" value="" id="password">
-        <input type="submit" value="Login" />
+        <tr><th><label for="firstname">Vorname:</label></th>
+        <td style="width: 100px"><input type="text" class="login" name="firstname" value="" id="firstname"></td></tr>
+        <tr><th><label for="lastname">Nachname:</label></th>
+        <td><input type="text" class="login" name="lastname" value="" id="lastname"></td></tr>
+        <input type="submit" class="button" value="Los Gehts!" />
 
     </form>
+    </table>
 {% endblock %}

@@ -16,11 +16,11 @@
 </head>
 
 <body>
-
+{% if user.is_staff == True %}
 <div id="framecontent">
 <div class="innertube_men">
     {% block menu %}
-        <div class="men_div" style="margin-top: 15px;">
+        <div class="men_div">
                 <a id="men" href="/quiz/all">Übersicht</a>
         </div>
         {% if user.is_staff %}
@@ -43,10 +43,10 @@
     {% endblock %}
 </div>
 </div>
-
+{% endif %}
 
 <div id="maincontent">
-<div class="innertube">
+<div class="innertube" align="center">
 
 {% block content %}
     {% if user.is_authenticated %}
@@ -79,6 +79,8 @@
         {% else %}
         <h1 id="main_link" align="center">Sie sind nicht angemeldet! Bitte <a href="/login">einloggen!</a> </h1>
         {% endif %}
+    <br>
+        <a href="/logout/"><input type="submit" class="button" value="Schließen"/></a>
 {% endblock %}
 </div>
 </div>

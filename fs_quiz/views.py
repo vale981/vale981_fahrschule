@@ -92,7 +92,7 @@ def check_view(request):
 
 def auswertung_index(request):
     return render_to_response('auswertung.html', {'user': request.user,
-                                                  'users': User.objects.filter(groups__name = 'Schüler')})
+                                                  'users': User.objects.all()})
 
 def ausw_user(request, user_id=1):
     user = User.objects.get(id=user_id)
