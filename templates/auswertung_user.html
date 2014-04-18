@@ -1,0 +1,16 @@
+{% extends 'quizzes.html' %}
+
+{% block main %}
+    {% if current_user.is_staff == False %}
+    <h1>Kein Zutrit!</h1>
+    {% else %}
+<h1>Übersicht für {{ user.get_full_name }}</h1>
+    <ul>
+        {% for quiz in user_quiz.quiz.all %}
+            <li>
+                <a href="/quiz/aw/get/{{ user.id }}/{{ quiz.id }}">{{ quiz.title }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+{% endblock %}

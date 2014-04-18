@@ -6,23 +6,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>Fahrschul examiner...</title>
-<script type="text/javascript">
-  WebFontConfig = {
-    google: { families: [ 'Denk+One::latin', 'Tauri::latin', 'Vampiro+One::latin' ] }
-  };
-  (function() {
-    var wf = document.createElement('script');
-    wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
-      '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
-    wf.type = 'text/javascript';
-    wf.async = 'true';
-    var s = document.getElementsByTagName('script')[0];
-    s.parentNode.insertBefore(wf, s);
-  })(); </script>
+
 
 
     {% load staticfiles %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/quizz.css' %}"/>
+    <script type="text/javascript" src="{% static 'jquery/jquery.js' %}"></script>
 
 </head>
 
@@ -34,9 +23,14 @@
         <div class="men_div" style="margin-top: 15px;">
                 <a id="men" href="/quiz/all">Übersicht</a>
         </div>
+        {% if user.is_staff %}
         <div class="men_div">
             <a id="men" href="/admin">Admin</a>
         </div>
+        <div class="men_div">
+            <a id="men" href="/quiz/auswertung">Ergebnisse</a>
+        </div>
+        {% endif %}
         {% if user.is_authenticated %}
             <div class="men_div">
             <a href="/logout/" id="men"> Logout</a>
@@ -53,29 +47,35 @@
 
 <div id="maincontent">
 <div class="innertube">
+
 {% block content %}
     {% if user.is_authenticated %}
     {% block main %}
-            <br>
+            <br><br>
 
             <div id="main_content">
                 {% if quizes.count == 0 %}
                     <h1 id="main_link" align="center">Keine Fragebogen vorhanden!</h1>
+                {% elif user_quiz.allowed_quiz.count == 0  %}
+                    <h1 id="main_link" align="center">Keine Fragebogen vorhanden!</h1>
                 {% endif %}
+            <br>
+                <table class="bordered" style="width: 100%">
 
-                <ol>
 
-                        {% for quiz in quizes %}
-                            <li>
-                             <a id="main_link" href="/quiz/get/{{ quiz.id }}">{{ quiz.title }}</a>
+                        {% for quiz in user_quiz.allowed_quiz.all %}
+
+                             <tr style="width: auto"><td><br><a id="main_link" href="/quiz/get/{{ quiz.id }}">{{ quiz.title }}</a>
                                    <br>
                              {{ quiz.description }}<br>
-                             </li><br>
+                             <br></td></tr>
                         {% endfor %}
-                </ol>
+
+                </table>
             </div>
 
         {% endblock %}
+
         {% else %}
         <h1 id="main_link" align="center">Sie sind nicht angemeldet! Bitte <a href="/login">einloggen!</a> </h1>
         {% endif %}

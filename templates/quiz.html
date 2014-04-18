@@ -21,30 +21,37 @@
         <br>
             <h1 id="main_link" style="text-align: center" align="center">Keine Fragen vorhanden!</h1>
         {% endif %}
-    <ol>
+
     <form action="/quiz/check/" name="quiz_form" method="post">{% csrf_token %}
     <input type="hidden" name="user_log" value="{{ user.id }}">
     <input type="hidden" name="quiz" value="{{ quiz.id }}">
 
-        {% for Frage in quiz.fragen.all %}
-        <li><div id="frage">{{Frage.content}}</div></li>
-        <input type="hidden" name="frage{{ Frage.id }}" value="{{ Frage.id }}">
 
+        {% for Frage in quiz.fragen.all %}
+        <table class="bordered" style="width: 100%"><tr><th colspan="10"><div id="frage">{{Frage.content}}</div></th>
+        <input type="hidden" name="frage{{ Frage.id }}" value="{{ Frage.id }}">
+        </tr>
+        <tr>
         {% for aw in Frage.antworten.all %}
-            <input type="checkbox" name="aw_check{{ aw.id }}" id="aw_check">
-            <label for="aw_check{{ aw.id }}">{{ aw.content }}</label>
+           <td colspan="3">{% if aw.bild == "" %}{% else %}<img src="/media/{{ aw.bild }}" align="center" width="100"><br>{% endif %}
+               <input align="center" type="checkbox" style="position: relative; bottom:-1px" class="css-checkbox" name="aw_check{{ aw.id }}" id="aw_check">
+             <label for="aw_check{{ aw.id }}">{% if aw.bild == "" %}{{ aw.content }}{% else %}{% endif %}</label>
+            </td>
+
             <input type="hidden" name="antwort{{ Frage.id }}" value="{{ aw.id }}">
 
 
-            <br>
+
 
 
     {% endfor %}
+    </tr></table><br>
     {% endfor %}
-    <input type="submit" value="Abgeben"/>
+
+    <input type="submit" class="button" value="Abgeben"/>
     </form>
 
-    </ol>
+
 
 
 

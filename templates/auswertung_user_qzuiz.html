@@ -1,0 +1,99 @@
+{% extends 'quizzes.html' %}
+
+{% block main %}
+    {% if current_user.is_staff == False %}
+    <h1>Kein Zutrit!</h1>
+    {% else %}
+{% for result_group in result_group %}
+<h1>{{ result_group.res_time }}</h1>
+
+<table class="bordered" id="Result{{ result_group.id  }}" border="0">
+
+    <tr>
+    <th>Frage</th>
+    <th>Antwort</th>
+    <th>Angekreuzt</th>
+    <th>Richtig</th>
+    <th>Punkte</th>
+    </tr>
+
+    {% for results in result_group.results.all %}
+    {% for fragen in fragen %}
+
+        {% if fragen == results.frage %}
+
+            {% if results.richtig == True %}
+            <tr style="background-color: MediumAquamarine">
+                <td style="color: white;">{{ fragen.content }}</td>
+                <td style="color: white;">{{ results.aw.content }}</td>
+                {% if results.choice == True %}
+                    <td style="color: white;" align="center" >✓</td>
+                {% else %}
+                    <td style="color: white;" align="center">X</td>
+                {% endif %}
+                <td style="color: white;">Richtig</td>
+                <td class="addition" style="color: white;" align="center">1/1</td>
+            </tr>
+            {% endif %}
+            {% if results.richtig == False %}
+            <tr style="background-color: #F08080">
+                <td style="color: white;">{{ fragen.content }}</td>
+                <td style="color: white;">{{ results.aw.content }}</td>
+                {% if results.choice == True %}
+                    <td style="color: white;" align="center">✓</td>
+                {% else %}
+                    <td style="color: white;" align="center">X</td>
+                {% endif %}
+                <td style="color: white;">Falsch</td>
+                <td class="addition" style="color: white;" align="center">0/1</td>
+            </tr>
+            {% endif %}
+
+
+
+
+
+        {% endif %}
+
+    {% endfor %}
+
+
+    {% endfor %}
+
+    <tr>
+
+        <th>Quiz:</th>
+        <th>{{ quiz.title }}</th>
+        <th>Benutzer:</th>
+        <th>{{ user.get_full_name }}</th>
+
+    <th align="center"> <x id="sumall{{ result_group.id }}" align="center">SUMALL</x>/{{ result_group.results.count }}</th>
+  </tr>
+</table>
+<script>
+var Points = 0.0;
+$('#Result{{ result_group.id }} td.addition').each(function(){
+       Points += parseFloat($(this).text());
+});
+$("#sumall{{ result_group.id }}").text(Points);
+var rowCount = $('#myTable tr').length;
+</script>
+<script>
+var tableToExcel = (function() {
+  var uri = 'data:application/vnd.ms-excel;base64,'
+    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+  return function(table, name) {
+    if (!table.nodeType) table = document.getElementById(table)
+    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+    window.location.href = uri + base64(format(template, ctx))
+  }
+})()
+</script>
+    <br>
+    <input type="button"  download="{{ user.get_full_name }} | {{ result_group.res_time }} | Ergebnis.csv" onclick="tableToExcel('Result{{ result_group.id }}', '{{ user.get_full_name }} | {{ result_group.res_time }} | Ergebnis.csv')" value="Export to Excel">
+{% endfor %}
+
+{% endif %}
+{% endblock %}

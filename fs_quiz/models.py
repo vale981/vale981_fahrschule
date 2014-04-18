@@ -1,14 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
-
-
-
-
-
-
-
-
+import datetime
 class Antwort(models.Model):
 
 
@@ -20,6 +12,8 @@ class Antwort(models.Model):
 
     richtig = models.BooleanField(blank=True)
 
+    bild = models.ImageField(upload_to='pics/', blank=True, verbose_name="Antwort Bild")
+
     def __unicode__(self):
         return self.content
     def __str__(self):              # __unicode__ on Python 2
@@ -29,7 +23,8 @@ class Antwort(models.Model):
 
     class Admin:
         pass
-
+    class Meta:
+        verbose_name_plural='Antworten'
 
 class Frage(models.Model):
 
@@ -47,6 +42,8 @@ class Frage(models.Model):
         return self.content
     def __str__(self):              # __unicode__ on Python 2
         return self.content
+    class Meta:
+        verbose_name_plural='Fragen'
 
 class Quiz(models.Model) :
     fragen = models.ManyToManyField(Frage, blank=True, verbose_name="Fragen")
@@ -68,6 +65,8 @@ class Quiz(models.Model) :
     def __str__(self):              # __unicode__ on Python 2
         return self.title
 
+    class Meta:
+        verbose_name_plural='Quiz'
 
 class Results(models.Model):
     quiz=models.ForeignKey(Quiz, blank=True, )
@@ -76,4 +75,9 @@ class Results(models.Model):
     richtig = models.BooleanField(blank=True)
     aw = models.ForeignKey(Antwort)
     choice = models.BooleanField(blank=True)
+    datetime = models.DateTimeField(default=datetime.datetime.now())
 
+    class Meta:
+        # sort by "the date" in descending order unless
+        # overridden in the query with order_by()
+        ordering = ['-datetime']

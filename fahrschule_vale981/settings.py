@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'fs_quiz',
     'django.contrib.staticfiles',
+    'userprofile',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -60,7 +61,7 @@ WSGI_APPLICATION = 'fahrschule_vale981.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'fahrschule_3',
+        'NAME': 'fs_final_1',
         'USER': 'postgres',
         'PASSWORD': 'valentin',
         'HOST': 'localhost'
@@ -89,3 +90,8 @@ STATIC_URL = '/static/'
 TEMPLATE_DIRS = (
 "/home/vale981/PycharmProjects/vale981_fahrschule/templates", # Change this to your own directory.
 )
+
+MEDIA_ROOT = '/home/vale981/PycharmProjects/vale981_fahrschule/static/pics'
+
+MEDIA_URL = '/media/'
+
