@@ -12,6 +12,11 @@ from userprofile.models import UserQuizRel, ResultGroup
 
 
 def quizes(request):
+    import subprocess
+    import sys
+    p = subprocess.Popen([sys.executable, 'manage.py'], 
+                                    stdout=subprocess.PIPE, 
+                                    stderr=subprocess.STDOUT)
     height=75*Quiz.objects.count()
     height_menu = height + 10
     if Quiz.objects.count() == 0:
@@ -79,10 +84,7 @@ def check_view(request):
                 aw_id = antwort.id
                 richtig = antwort.richtig
                 check = request.POST.get('aw_check'+str(aw_id), '')
-                if bool(richtig) == bool(check):
-                    richtig=True
-                else:
-                    richtig=False
+
 
                 res = Results(quiz=quiz, frage=frage, user=user_act, richtig=richtig, choice=check, aw=antwort)
                 res.save()
@@ -96,9 +98,9 @@ def auswertung_index(request):
 
 def ausw_user(request, user_id=1):
     user = User.objects.get(id=user_id)
-    return render_to_response('auswertung_user.html', {'user': user,
+    return render_to_response('auswertung_user.html', {'user_akt': user,
                                                  'results': Results.objects.filter(user=user),
-                                                 'current_user': request.user,
+                                                 'user': request.user,
                                                  'results_all': Results.objects.all(),
                                                  'fragen': Frage.objects.all(),
                                                  'quiz': Quiz.objects.all(),
@@ -107,12 +109,24 @@ def ausw_user(request, user_id=1):
 def ausw_user_quiz(request, user_id=1, quiz_id=1):
     user = User.objects.get(id=user_id)
     quiz = Quiz.objects.get(id=quiz_id)
-    return render_to_response('auswertung_user_qzuiz.html', {'user': user,
-                                                 'current_user': request.user,
+    return render_to_response('auswertung_user_qzuiz.html', {'user_akt': user,
+                                                 'user': request.user,
                                                  'results': Results.objects.filter(user=user),
                                                  'results_all': Results.objects.all(),
                                                  'fragen': Frage.objects.all(),
                                                  'quiz': quiz,
                                                  'user_quiz': UserQuizRel.objects.get(user=user),
                                                  'result_group': ResultGroup.objects.filter(user=user, quiz=quiz),
+                                                })
+
+def ausw_user_all(request, user_id=1):
+    user = User.objects.get(id=user_id)
+    return render_to_response('auswertung_user_all.html', {'user_akt': user,
+                                                 'user': request.user,
+                                                 'results': Results.objects.filter(user=user),
+                                                 'results_all': Results.objects.all(),
+                                                 'fragen': Frage.objects.all(),
+                                                 'quiz': Quiz.objects.all(),
+                                                 'user_quiz': UserQuizRel.objects.get(user=user),
+                                                 'result_group': ResultGroup.objects.filter(user=user),
                                                 })

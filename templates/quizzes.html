@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Fahrschul examiner...</title>
+<title>Tobermann Truck</title>
 
 
 
@@ -16,9 +16,12 @@
 </head>
 
 <body>
+{% if user.is_staff == False %}<img src="/media/pics/head.png" style="position: fixed;" width="100%">{% endif %}
+
 {% if user.is_staff == True %}
 <div id="framecontent">
 <div class="innertube_men">
+
     {% block menu %}
         <div class="men_div">
                 <a id="men" href="/quiz/all">Übersicht</a>
@@ -45,13 +48,15 @@
 </div>
 {% endif %}
 
-<div id="maincontent">
+
+{% if user.is_staff == False %}<div id="maincontent">{% else %}<div id="maincontent_without_head">{% endif %}
 <div class="innertube" align="center">
 
 {% block content %}
+
     {% if user.is_authenticated %}
     {% block main %}
-            <br><br>
+        <br>
 
             <div id="main_content">
                 {% if quizes.count == 0 %}
@@ -60,12 +65,12 @@
                     <h1 id="main_link" align="center">Keine Fragebogen vorhanden!</h1>
                 {% endif %}
             <br>
-                <table class="bordered" style="width: 100%">
+                <table class="bordered" style="width: 100%;">
 
 
                         {% for quiz in user_quiz.allowed_quiz.all %}
 
-                             <tr style="width: auto"><td><br><a id="main_link" href="/quiz/get/{{ quiz.id }}">{{ quiz.title }}</a>
+                             <tr style="width: auto; background-color:{{ quiz.color }};"><td onclick="document.location = '/quiz/get/{{ quiz.id }}';"><br><x id="main_link">{{ quiz.title }}</x>
                                    <br>
                              {{ quiz.description }}<br>
                              <br></td></tr>
@@ -73,7 +78,7 @@
 
                 </table>
             </div>
-
+    <br>
         {% endblock %}
 
         {% else %}
@@ -81,6 +86,7 @@
         {% endif %}
     <br>
         <a href="/logout/"><input type="submit" class="button" value="Schließen"/></a>
+
 {% endblock %}
 </div>
 </div>

@@ -1,16 +1,21 @@
 {% extends 'quizzes.html' %}
 
 {% block main %}
-    {% if current_user.is_staff == False %}
+    {% if user.is_staff == False %}
     <h1>Kein Zutrit!</h1>
     {% else %}
-<h1>Übersicht für {{ user.get_full_name }}</h1>
-    <ul>
+<h1>Übersicht für {{ user_akt.get_full_name }}</h1>
+<table class="zebra">
+<tr><td align="center"><a href="/quiz/aw/get/{{ user_akt.id }}/all" id="main_link">Gesamt Ergebnis</a></td></tr>
         {% for quiz in user_quiz.quiz.all %}
-            <li>
-                <a href="/quiz/aw/get/{{ user.id }}/{{ quiz.id }}">{{ quiz.title }}</a>
-            </li>
+
+                <tr align="center">
+                    <td>
+                    <a id="main_link" href="/quiz/aw/get/{{ user_akt.id }}/{{ quiz.id }}">{{ quiz.title }}</a>
+                    </td>
+                </tr>
+
         {% endfor %}
-    </ul>
+</table>
     {% endif %}
 {% endblock %}

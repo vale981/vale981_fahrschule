@@ -57,6 +57,7 @@ class Quiz(models.Model) :
                                    help_text="Die Beschreibung des Quiz",
                                    verbose_name="Beschreibung"
                                    )
+    color = models.CharField(blank=True, max_length=23)
     class Admin:
         pass
 

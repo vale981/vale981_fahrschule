@@ -10,4 +10,5 @@ urlpatterns = patterns('',
     url(r'^auswertung/', 'fs_quiz.views.auswertung_index', name='Auswertung'),
     url(r'^aw/get/(?P<user_id>\d+)$', 'fs_quiz.views.ausw_user', name='awuser'),
     url(r'^aw/get/(?P<user_id>\d+)/(?P<quiz_id>\d+)$', 'fs_quiz.views.ausw_user_quiz', name='awuserquiz'),
+    url(r'^aw/get/(?P<user_id>\d+)/all$', 'fs_quiz.views.ausw_user_all', name='awuserquizall'),
 )

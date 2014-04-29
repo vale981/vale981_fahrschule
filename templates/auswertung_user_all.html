@@ -1,13 +1,19 @@
 {% extends 'quizzes.html' %}
 
 {% block main %}
+    <script>
+    $( document ).ready(hideTables);
+    function hideTables(){
+    {% for result_group in result_group %}
+    $("#Result{{ result_group.id  }}").hide();
+    {% endfor %}
+    }
+    </script>
     {% if user.is_staff == False %}
     <h1>Kein Zutrit!</h1>
     {% else %}
 {% for result_group in result_group %}
-
 <div id="ResultDiv{{ result_group.id }}">
-
 <table class="bordered" id="Result{{ result_group.id  }}" border="0">
 
     <tr>
@@ -52,19 +58,15 @@
 
         <th>{{ result_group.res_time }}</th>
         <th></th>
-    <th align="center"> <x id="1{{ result_group.id }}"><x id="sumall{{ result_group.id }}" align="center">SUMALL</x></x>/<x id="2{{ result_group.id }}">{{ quiz.fragen.count }}</x></th>
+    <th align="center"> <x id="1{{ result_group.id }}"><x id="sumall{{ result_group.id }}" align="center">SUMALL</x></x>/<x id="2{{ result_group.id }}">{{ result_group.quiz.fragen.count }}</x></th>
   </tr>
 </table>
     <br>
-    <table id="summary{{ result_group.id }}" class="bordered">
+    <h1>{{ result_group.res_time.date }}</h1>
+    <table id="summary{{ result_group.id }}" class="bordered" style="width:100px;">
+
     <tr>
-        <th>Name: </th><td>{{ user_akt.get_full_name }}</td>
-    </tr>
-    <tr>
-         <th>Datum:</th><td>{{ result_group.res_time }}</td>
-    </tr>
-    <tr>
-        <th>Modul: </th><td>{{ quiz.title }}</td>
+        <th width="30px">Modul: </th><td>{{ result_group.quiz.title }}</td>
     </tr>
     <tr>
         <th>Ergebnis: </th>
@@ -73,7 +75,7 @@
         </div></td>
     </tr>
     </table>
-    </div>
+</div>
 <script>
 var Points = 0.0;
 $('#Result{{ result_group.id }} td.addition').each(function(){
@@ -83,9 +85,33 @@ $("#sumall{{ result_group.id }}").text(Points);
 var rowCount = $('#myTable tr').length;
 
 var prozent = parseInt($("#1{{ result_group.id }}").text()) / parseInt($("#2{{ result_group.id }}").text()) * 100;
-$("#prozent{{ result_group.id }}").text(prozent + '%' + ' richtige Antworten');
+$("#prozent{{ result_group.id }}").text(prozent + '%');
 </script>
 
+
+
+    <br>
+    <input type="button"  download="{{ user_akt.get_full_name }} | {{ result_group.res_time }} | Ergebnis.csv" onclick="tableToExcel('ResultDiv{{ result_group.id }}', '{{ user_akt.get_full_name }} | {{ result_group.res_time }} | Ergebnis.csv')" value="Export to Excel">
+<br><br>
+{% endfor %}
+<br>
+{% endif %}
+<script>
+function printDiv()
+{
+  {% for result_group in result_group %}
+  var divToPrint{{ result_group.id }}=document.getElementById('summary{{ result_group.id }}');
+  {% endfor %}
+  var sim_res = $('#sim_res').val();
+  newWin= window.open("");
+  newWin.document.write("<style>th{text-align: left;} #bd{background-size: 100%; background-image: url(/media/pics/urkunde.jpg); width:1000px; height:1410px;-webkit-print-color-adjust:exact; margin:-8px;padding:0;} table{display:inline-table;}#name{position:absolute;top:405px;left:100px;width:800px;height:100px; text-align:center;}#results{position: absolute; top: 775px; left:100px; width:800px;}</style><div id='bd'><body style='font-family: Arial; background-color:#84FF3E;'><div id='name'><span style='line-height:1.9em; font-size:50px; font-family:fantasy;'>{{ user_akt.get_full_name }}</span></div><div id='results' align='center'>" {% for result_group in result_group %}+ divToPrint{{ result_group.id }}.outerHTML + "   "{% endfor %} + "</div><span style='font-weight:bold; position:absolute; top:910px; left:100px; width:800px; text-align: center;'>Simulator Ergebnis: " + sim_res +  "</span></body></div>");
+
+}
+</script>
+        <label for="sim_res">Simulator Ergebnis:</label>
+        <input type="Text" id="sim_res">
+        <input type="button" onclick="printDiv()" value="Zeugnis Drucken">
+    <br>
 <script>
 var tableToExcel = (function() {
   var uri = 'data:application/vnd.ms-excel;base64,'
@@ -99,24 +125,4 @@ var tableToExcel = (function() {
   }
 })()
 </script>
-<script>
-function printDiv()
-{
-  var img = '<img src="/media/pics/1.png" align="center">';
-  var divToPrint=document.getElementById('summary{{ result_group.id }}');
-  newWin= window.open("");
-  newWin.document.write(img  + "<style>th{text-align: left;} div{margin-left: -1px;}</style><body style='font-family: Arial; text-align: left;'><hr><br>" + divToPrint.outerHTML + "<br><hr>Ausgestellt von Tobermann GmbH</body>");
-  setTimeout(printClose(),2000);
-  function printClose(){
-  newWin.print();
-  newWin.close();
-  }
-}
-</script>
-    <br>
-    <input type="button" onclick="printDiv()" value="Ergebnis Drucken">
-    <input type="button"  download="{{ user_akt.get_full_name }} | {{ result_group.res_time }} | Ergebnis.csv" onclick="tableToExcel('ResultDiv{{ result_group.id }}', '{{ user_akt.get_full_name }} | {{ result_group.res_time }} | Ergebnis.csv')" value="Export to Excel">
-{% endfor %}
-<br>
-{% endif %}
 {% endblock %}

@@ -33,11 +33,12 @@
         </tr>
         <tr>
         {% for aw in Frage.antworten.all %}
-           <td colspan="3">{% if aw.bild == "" %}{% else %}<img src="/media/{{ aw.bild }}" align="center" width="100"><br>{% endif %}
-               <input align="center" type="checkbox" style="position: relative; bottom:-1px" class="css-checkbox" name="aw_check{{ aw.id }}" id="aw_check">
-             <label for="aw_check{{ aw.id }}">{% if aw.bild == "" %}{{ aw.content }}{% else %}{% endif %}</label>
+            <td colspan="3"><label id="checklabel" for="aw_check{{ aw.id }}">
+               {% if aw.bild == "" %}{% else %}<img src="/media/{{ aw.bild }}" align="center" width="100"><br>{% endif %}
+                    <input align="center" type="checkbox" id="aw_check{{ aw.id }}" name="aw_check{{ aw.id }}" class="aw_check[{{ Frage.id }}][]" />
+            {% if aw.bild == "" %}{{ aw.content }}{% else %}{% endif %}
+            </label>
             </td>
-
             <input type="hidden" name="antwort{{ Frage.id }}" value="{{ aw.id }}">
 
 
@@ -56,9 +57,17 @@
 
 
 
-    
-{% endblock %}
+ <script>$("input:checkbox").click(function() {
+    if ($(this).is(":checked")) {
+        var group = "input:checkbox[class='" + $(this).attr("class") + "']";
+        $(group).prop("checked", false);
+        $(this).prop("checked", true);
+    } else {
+        $(this).prop("checked", false);
+    }
+});</script>
 
+{% endblock %}
 
 </html>
 

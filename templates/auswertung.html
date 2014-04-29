@@ -5,13 +5,12 @@
     {% if user.is_staff == False %}
     <h1>Kein Zutrit!</h1>
     {% else %}
-    <h1>Übersicht über alle User der Gruppe Schüler:</h1>
-<ol>
+<table border="0px">
+
     {% for users in users %}
-        <li>
-            <a href="/quiz/aw/get/{{ users.id }}">{{ users.get_full_name }}</a>
-        </li>
+
+            <tr><td align="center"><h3><a href="/quiz/aw/get/{{ users.id }}">{{ users.get_full_name }}</a></h3></td></tr>
     {% endfor %}
-</ol>
+</table>
 {% endif %}
 {% endblock %}

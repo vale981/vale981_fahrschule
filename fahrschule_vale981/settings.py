@@ -57,16 +57,24 @@ WSGI_APPLICATION = 'fahrschule_vale981.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
+PROJECT_DIR = os.path.abspath(os.path.dirname(__file__))
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'fs_final_1',
-        'USER': 'postgres',
-        'PASSWORD': 'valentin',
-        'HOST': 'localhost'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(PROJECT_DIR, 'base.db'),
     }
 }
+# }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'fs_final_1',
+#         'USER': 'postgres',
+#         'PASSWORD': 'valentin',
+#         'HOST': 'localhost'
+#     }
+# }
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
